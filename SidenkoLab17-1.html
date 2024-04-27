@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гра "Вгадай число"</title>
+    <script>
+        function getCurrentTime() {
+            const currentDate = new Date();
+            const options = {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            };
+            const formattedDate = currentDate.toLocaleString('uk-UA', options);
+            console.log(formattedDate);
+            return formattedDate;
+        }
+
+        function guessNumberGame() {
+            let randomNumber = Math.floor(Math.random() * 101); // Генеруємо випадкове число від 0 до 100
+            let attempts = 0;
+
+            while (true) {
+                let userGuess = parseInt(prompt("Вгадайте число від 0 до 100:"));
+
+                if (isNaN(userGuess)) {
+                    alert("Будь ласка, введіть коректне число.");
+                    continue;
+                }
+
+                attempts++;
+
+                if (userGuess === randomNumber) {
+                    console.log(`${getCurrentTime()} Спроба ${attempts}: число ${userGuess} – вірно`);
+                    alert(`За ${attempts} спроб ви вгадали число ${randomNumber}!`);
+                    let playAgain = confirm("Хочете зіграти ще раз?");
+                    if (playAgain) {
+                        guessNumberGame(); // Рекурсивно починаємо гру знову
+                    } else {
+                        break;
+                    }
+                } else {
+                    let message = '';
+
+                    if (Math.abs(randomNumber - userGuess) > 20) {
+                        message = "дуже холодно";
+                    } else if (Math.abs(randomNumber - userGuess) > 10) {
+                        message = "холодно";
+                    } else if (Math.abs(randomNumber - userGuess) > 5) {
+                        message = "тепло";
+                    } else {
+                        message = "дуже гаряче";
+                    }
+
+                    console.log(`${getCurrentTime()} Спроба ${attempts}: число ${userGuess} – не вірно (${message})`);
+                    alert(`Спроба ${attempts}: число ${userGuess} – не вірно (${message})`);
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Гра "Вгадай число"</h1>
+    <button onclick="guessNumberGame()">Почати гру</button>
+</body>
+</html>
